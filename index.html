@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Train Finder — Project</title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+html,body {height:100%;}
+body {min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    background:linear-gradient(135deg, rgba(255,99,71,0), rgba(118,75,162,0.6)),
+    url('https://uploads.onecompiler.io/43av3fsr3/43zekmh5g/WhatsApp%20Image%202025-10-12%20at%2016.54.26%20(1).jpeg') no-repeat center center fixed;
+    background-size:cover; padding:30px 16px;}
+.project-header {
+    width:100%; 
+    max-width:900px; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    border-radius:20px; 
+    padding:35px 30px; 
+    margin-bottom:25px; 
+    text-align:center;
+    color: #fff; 
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4); 
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.project-header .logo {
+    border: 8px solid white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.project-title {
+    font-size:32px; 
+    letter-spacing:4px; 
+    font-weight:900; 
+    margin-bottom:15px;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.6);
+    font-family: 'Arial Black', sans-serif;
+}
+
+.project-tagline {
+    font-size:22px; 
+    margin-bottom:20px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    letter-spacing: 1.5px;
+}
+
+.project-desc {
+    color: #ffffff; 
+    font-size:19px; 
+    max-width:780px; 
+    margin:0 auto; 
+    line-height:1.7; 
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.center-wrap {width:100%; max-width:900px; display:flex; justify-content:center; align-items:center;}
+.container {width:100%;}
+.auth-card {background: rgba(255,255,255,0.98); border-radius:20px; padding:28px 24px; box-shadow:0 15px 50px rgba(0,0,0,0.28);}
+.logo {display:block; margin:0 auto 10px auto; width:90px; height:90px; border-radius:50%; object-fit:cover;}
+h1 {text-align:center; color:#2d3748; font-size:22px; margin-bottom:5px;}
+.subtitle {text-align:center; color:#718096; font-size:13px; margin-bottom:18px;}
+.form-group {margin-bottom:14px;}
+label {display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#2d3748;}
+label span {color:red;}
+.input-wrapper input {width:100%; padding:12px 40px; border-radius:10px; border:1px solid #d1d5db; font-size:14px;}
+button {border:none; border-radius:10px; background:#667eea; color:white; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px;}
+button:hover {background:#564dbf;}
+button.full-width {width:100%; padding:12px;}
+.hidden {display:none;}
+.dashboard-box {text-align:center;}
+.logout-btn {margin-top:14px; width:100%; background:#f44336;}
+.logout-btn:hover {background:#d32f2f;}
+.train-dashboard {margin-top: 20px; text-align: left;}
+.train-dashboard label {font-weight: bold;}
+.train-dashboard select {width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;}
+.train-card {background: #f9f9f9; padding: 12px; margin-top: 10px; border-radius: 8px; border-left: 5px solid #667eea;}
+.train-card h3 {margin: 0; color: #3b82f6;}
+.train-card p {margin: 4px 0; color: #555;}
+
+/* TRAIN RESULTS TABLE */
+.train-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.train-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.train-table th {
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.train-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+.train-table tbody tr:hover {
+    background: #f5f7ff;
+    transform: scale(1.01);
+}
+
+.train-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: #333;
+}
+
+.train-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.train-number {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.train-name {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.train-fare {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .train-table {
+        font-size: 12px;
+    }
+    .train-table th, .train-table td {
+        padding: 8px 5px;
+    }
+}
+.small-btn {background:#eee;color:#333;padding:8px;margin-top:5px;width:auto;font-size:13px;border-radius:6px;}
+
+/* NEW CARD-STYLE TRAIN TYPE BUTTONS */
+.train-type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.train-type-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.train-type-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.train-type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.train-type-card:hover::before {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.train-type-card.express {
+    background: linear-gradient(135deg, #e74c3c 0%, #95a5a6 100%);
+}
+
+.train-type-card.passenger {
+    background: linear-gradient(135deg, #3498db 0%, #c0c0c0 100%);
+}
+
+.train-type-card.local {
+    background: linear-gradient(135deg, #27ae60 0%, #f1c40f 100%);
+}
+
+.train-type-card.vande-bharat {
+    background: linear-gradient(135deg, #ecf0f1 0%, #87ceeb 100%);
+    color: #2c3e50;
+}
+
+.train-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.train-type-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.train-type-desc {
+    font-size: 13px;
+    margin-bottom: 20px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+.search-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid white;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0;
+}
+
+.search-btn:hover {
+    background: white;
+    color: #667eea;
+}
+</style>
+</head>
+<body>
+
+<div class="project-header">
+  <img src="https://uploads.onecompiler.io/43av3fsr3/43zekmh5g/WhatsApp%20Image%202025-10-12%20at%2017.23.19.jpeg" class="logo">
+  <div class="project-title">SMART TRAIN FINDER</div>
+  <div class="project-tagline">Find trains, check availability & Get status — Fast & Simple.</div>
+  <div class="project-desc">Smart Train Finder helps users find trains between stations and view schedules.</div>
+</div>
+
+<div class="center-wrap">
+<div class="container">
+
+<!-- SIGNUP FORM -->
+<div class="auth-card" id="signupForm">
+  <h1>Create Account</h1>
+  <p class="subtitle">Join Smart Train Finder today!</p>
+  <div class="form-group">
+      <label>Username <span>*</span></label>
+      <div class="input-wrapper"><input type="text" id="signupUsername" placeholder="Enter username" required></div>
+  </div>
+  <div class="form-group">
+      <label>Email <span>*</span></label>
+      <div class="input-wrapper"><input type="email" id="signupEmail" placeholder="Enter email" required></div>
+  </div>
+  <div class="form-group">
+      <label>Mobile <span>*</span></label>
+      <div class="input-wrapper"><input type="tel" id="signupMobile" placeholder="Enter mobile number" maxlength="10" required></div>
+  </div>
+  <div class="form-group">
+      <label>Password <span>*</span></label>
+      <div class="input-wrapper"><input type="password" id="signupPassword" placeholder="Enter password" required></div>
+  </div>
+  <button class="full-width" onclick="generateOTP(event)">Generate OTP</button>
+  <div style="margin-top:10px; text-align:center;"><button class="small-btn" onclick="showLogin()">Already have account? Login</button></div>
+</div>
+
+<!-- OTP FORM -->
+<div class="auth-card hidden" id="otpForm">
+  <img src="https://uploads.onecompiler.io/43av3fsr3/43zekmh5g/WhatsApp%20Image%202025-10-12%20at%2017.23.19.jpeg" class="logo">
+  <h1>OTP Verification</h1>
+  <p class="subtitle">Enter the 4-digit code sent to your mobile</p>
+  <div class="input-wrapper"><input type="text" id="EnteredOTP" placeholder="Enter 4-digit OTP" maxlength="4" required></div>
+  <button class="full-width" onclick="verifyOTP()">Verify OTP</button>
+  <button class="full-width" onclick="resendOTP()">Resend OTP</button>
+</div>
+
+<!-- LOGIN FORM -->
+<div class="auth-card hidden" id="loginForm">
+  <img src="https://uploads.onecompiler.io/43av3fsr3/43zekmh5g/WhatsApp%20Image%202025-10-12%20at%2017.23.19.jpeg" class="logo">
+  <h1>Smart Train Finder</h1>
+  <p class="subtitle">Login to your Account</p>
+  <div class="form-group">
+      <label>Username / Email / Mobile <span>*</span></label>
+      <div class="input-wrapper"><input type="text" id="loginIdentifier" placeholder="Enter username/email/mobile" required></div>
+  </div>
+  <div class="form-group">
+      <label>Password <span>*</span></label>
+      <div class="input-wrapper"><input type="password" id="loginPassword" placeholder="Enter password" required></div>
+  </div>
+  <button class="full-width" onclick="handleLogin(event)">Login</button>
+  <div style="margin-top:10px; text-align:center;"><button class="small-btn" onclick="showSignup()">Don't have account? Sign Up</button></div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="auth-card hidden" id="dashboard">
+  <div class="dashboard-box">
+    <h1>Welcome to Smart Train Finder......</h1>
+    <h2>Let's Search Your Train</h2>
+    <p id="dashUsername"></p>
+    <div class="train-dashboard">
+      <h2>Find Trains</h2>
+      <label>Source Station:</label>
+      <select id="source">
+        <option value="">--Select Source--</option>
+        <option>Hyderabad</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Delhi</option>
+        <option>Mumbai</option>
+        <option>Vijayawada</option>
+        <option>Vijayanagaram</option>
+        <option>Vishakapatnam</option>
+        <option>Rajamundry</option>
+        <option>Samarallakota</option>
+        <option>Tuni</option>
+        <option>Annavaram</option>
+        <option>Srikakulam Road</option>
+        <option>Palasa</option>
+        <option>Ichapuram</option>
+        <option>Berhampur</option>
+        <option>Cuttack JN</option>
+      </select>
+      
+      <label>Destination Station:</label>
+      <select id="destination">
+        <option value="">--Select Destination--</option>
+        <option>Hyderabad</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Delhi</option>
+        <option>Mumbai</option>
+        <option>Vijayawada</option>
+        <option>Vijayanagaram</option>
+        <option>Vishakapatnam</option>
+        <option>Rajamundry</option>
+        <option>Samarallakota</option>
+        <option>Tuni</option>
+        <option>Annavaram</option>
+        <option>Srikakulam Road</option>
+        <option>Palasa</option>
+        <option>Ichapuram</option>
+        <option>Berhampur</option>
+        <option>Cuttack JN</option>
+      </select>
+
+      <!-- TRAIN TYPE CARD BUTTONS (hidden initially) -->
+      <div class="train-type-cards" id="trainTypeButtons" style="display:none;">
+        <div class="train-type-card express" onclick="showFilteredTrains('express')">
+          <span class="train-icon">🚄</span>
+          <div class="train-type-title">Express</div>
+          <div class="train-type-desc">Fast intercity trains with limited stops. Perfect for long-distance travel.</div>
+          <button class="search-btn">Search</button>
+        </div>
+
+        <div class="train-type-card passenger" onclick="showFilteredTrains('passenger')">
+          <span class="train-icon">🚃</span>
+          <div class="train-type-title">Passenger</div>
+          <div class="train-type-desc">Regular trains with frequent stops. Economical travel option for all.</div>
+          <button class="search-btn">Search</button>
+        </div>
+
+        <div class="train-type-card local" onclick="showFilteredTrains('local')">
+          <span class="train-icon">🚇</span>
+          <div class="train-type-title">Local</div>
+          <div class="train-type-desc">Suburban trains for daily commuters. Stops at every station en route.</div>
+          <button class="search-btn">Search</button>
+        </div>
+
+        <div class="train-type-card vande-bharat" onclick="showFilteredTrains('vandeBharat')">
+          <span class="train-icon">⚡</span>
+          <div class="train-type-title">Vande Bharat</div>
+          <div class="train-type-desc">Premium high-speed trains with world-class amenities and comfort.</div>
+          <button class="search-btn">Search</button>
+        </div>
+      </div>
+
+      <div id="trainResults"></div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+let users=[], currentUser=null, tempUser={}, generatedOTP=null;
+function showLogin(){document.getElementById('signupForm').classList.add('hidden');document.getElementById('loginForm').classList.remove('hidden');}
+function showSignup(){document.getElementById('signupForm').classList.remove('hidden');document.getElementById('loginForm').classList.add('hidden');}
+function goBackSignup(){document.getElementById('otpForm').classList.add('hidden');document.getElementById('signupForm').classList.remove('hidden');}
+function generateOTP(e){e.preventDefault();
+    const u=document.getElementById('signupUsername').value;
+    const e1=document.getElementById('signupEmail').value;
+    const m=document.getElementById('signupMobile').value;
+    const p=document.getElementById('signupPassword').value;
+    generatedOTP=Math.floor(1000+Math.random()*9000);
+    tempUser={username:u,email:e1,mobile:m,password:p};
+    alert("Demo OTP: "+generatedOTP);
+    document.getElementById('signupForm').classList.add('hidden');
+    document.getElementById('otpForm').classList.remove('hidden');
+}
+function resendOTP(){generatedOTP=Math.floor(1000+Math.random()*9000);alert("Resent OTP: "+generatedOTP);}
+function verifyOTP(){const entered=document.getElementById('EnteredOTP').value;
+    if(entered==generatedOTP){users.push(tempUser);currentUser=tempUser;showDashboard();}
+    else alert("Incorrect OTP!");}
+function handleLogin(e){e.preventDefault();
+    const id=document.getElementById('loginIdentifier').value;
+    const p=document.getElementById('loginPassword').value;
+    const u=users.find(x=>x.username===id||x.email===id||x.mobile===id);
+    if(!u){alert('User not found');return;}
+    if(p===u.password){currentUser=u;showDashboard();}
+    else alert('Incorrect password');}
+function showDashboard(){
+    document.getElementById('signupForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('otpForm').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('dashUsername').textContent=`Welcome, ${currentUser.username}!`;
+}
+
+/* ----------------- TRAIN DATA ----------------- */
+const trainsData = {
+  "express": [
+    {"trainNo": 12891, "trainName": "East Coast Express", "route": "Visakhapatnam → Hyderabad", "fare": 480, "departure": "06:00", "arrival": "18:30"},
+    {"trainNo": 12728, "trainName": "Godavari Express", "route": "Visakhapatnam → Secunderabad", "fare": 520, "departure": "07:15", "arrival": "19:45"},
+    {"trainNo": 17233, "trainName": "Bhagyanagar Express", "route": "Hyderabad → Vijayawada", "fare": 380, "departure": "08:00", "arrival": "12:30"},
+    {"trainNo": 17482, "trainName": "Tirupati Express", "route": "Tirupati → Hyderabad", "fare": 420, "departure": "09:30", "arrival": "20:00"},
+    {"trainNo": 12603, "trainName": "Mangaluru Express", "route": "Chennai → Mangaluru", "fare": 610, "departure": "10:00", "arrival": "23:45"},
+    {"trainNo": 12508, "trainName": "Sikkim Express", "route": "Guwahati → Kolkata", "fare": 890, "departure": "11:30", "arrival": "05:15"},
+    {"trainNo": 12246, "trainName": "Duronto Express", "route": "Howrah → Mumbai", "fare": 1590, "departure": "13:00", "arrival": "10:30"},
+    {"trainNo": 12321, "trainName": "Udyan Abha Toofan Express", "route": "Kolkata → Delhi", "fare": 1350, "departure": "14:45", "arrival": "08:20"},
+    {"trainNo": 12673, "trainName": "Cheran Express", "route": "Coimbatore → Chennai", "fare": 540, "departure": "16:00", "arrival": "23:30"},
+    {"trainNo": 12951, "trainName": "Rajdhani Express", "route": "Mumbai → New Delhi", "fare": 1850, "departure": "17:30", "arrival": "09:15"}
+  ],
+  "passenger": [
+    {"trainNo": 7485, "trainName": "Palasa Passenger", "route": "Palasa → Visakhapatnam", "fare": 95, "departure": "05:30", "arrival": "08:45"},
+    {"trainNo": 7645, "trainName": "Kakinada Town Passenger", "route": "Kakinada → Rajahmundry", "fare": 70, "departure": "06:15", "arrival": "08:00"},
+    {"trainNo": 7298, "trainName": "Vijayawada Passenger", "route": "Vijayawada → Guntur", "fare": 60, "departure": "07:00", "arrival": "08:30"},
+    {"trainNo": 7333, "trainName": "Guntur Passenger", "route": "Guntur → Ongole", "fare": 85, "departure": "08:30", "arrival": "11:15"},
+    {"trainNo": 7411, "trainName": "Rajahmundry Passenger", "route": "Rajahmundry → Samalkot", "fare": 40, "departure": "09:15", "arrival": "10:30"},
+    {"trainNo": 7056, "trainName": "Warangal Passenger", "route": "Warangal → Kazipet", "fare": 35, "departure": "10:00", "arrival": "10:45"},
+    {"trainNo": 7112, "trainName": "Vizianagaram Passenger", "route": "Vizianagaram → Palasa", "fare": 65, "departure": "11:30", "arrival": "13:15"},
+    {"trainNo": 7623, "trainName": "Eluru Passenger", "route": "Eluru → Vijayawada", "fare": 55, "departure": "12:45", "arrival": "14:00"},
+    {"trainNo": 7548, "trainName": "Tenali Passenger", "route": "Tenali → Guntur", "fare": 45, "departure": "14:00", "arrival": "15:15"},
+    {"trainNo": 7124, "trainName": "Secunderabad Passenger", "route": "Secunderabad → Nalgonda", "fare": 75, "departure": "15:30", "arrival": "18:00"}
+  ],
+  "local": [
+    {"trainNo": 1001, "trainName": "Srikakulam Local", "route": "Srikakulam → Vizianagaram", "fare": 25, "departure": "05:00", "arrival": "06:30"},
+    {"trainNo": 1002, "trainName": "Vizag Suburban", "route": "Duvvada → Vizianagaram", "fare": 35, "departure": "06:00", "arrival": "07:15"},
+    {"trainNo": 1003, "trainName": "Chennai Local", "route": "Tambaram → Chennai Central", "fare": 20, "departure": "07:00", "arrival": "08:00"},
+    {"trainNo": 1004, "trainName": "Mumbai Local", "route": "Churchgate → Borivali", "fare": 15, "departure": "08:00", "arrival": "09:30"},
+    {"trainNo": 1005, "trainName": "Pune Metro Local", "route": "Pune → Pimpri", "fare": 25, "departure": "09:00", "arrival": "10:00"},
+    {"trainNo": 1006, "trainName": "Hyderabad MMTS", "route": "Secunderabad → Falaknuma", "fare": 20, "departure": "10:00", "arrival": "11:15"},
+    {"trainNo": 1007, "trainName": "Bengaluru Local", "route": "Majestic → Yeshwanthpur", "fare": 30, "departure": "11:00", "arrival": "12:00"},
+    {"trainNo": 1008, "trainName": "Kolkata Local", "route": "Howrah → Sealdah", "fare": 10, "departure": "12:00", "arrival": "13:00"},
+    {"trainNo": 1009, "trainName": "Delhi Local", "route": "New Delhi → Ghaziabad", "fare": 25, "departure": "13:00", "arrival": "14:15"},
+    {"trainNo": 1010, "trainName": "Coimbatore Local", "route": "Coimbatore → Tiruppur", "fare": 30, "departure": "14:00", "arrival": "15:30"}
+  ],
+  "vandeBharat": [
+    {"trainNo": 20834, "trainName": "Vande Bharat (Vizag–Secunderabad)", "route": "Visakhapatnam → Secunderabad", "fare": 1450, "departure": "06:00", "arrival": "13:30"},
+    {"trainNo": 20999, "trainName": "Vande Bharat (Tirupati–Chennai)", "route": "Tirupati → Chennai", "fare": 1320, "departure": "07:30", "arrival": "11:00"},
+    {"trainNo": 22436, "trainName": "Vande Bharat (Delhi–Varanasi)", "route": "New Delhi → Varanasi", "fare": 1650, "departure": "08:00", "arrival": "16:00"},
+    {"trainNo": 22228, "trainName": "Vande Bharat (Mumbai–Shirdi)", "route": "Mumbai → Shirdi", "fare": 1520, "departure": "09:15", "arrival": "14:45"},
+    {"trainNo": 20835, "trainName": "Vande Bharat (Bangalore–Hyderabad)", "route": "Bengaluru → Hyderabad", "fare": 1400, "departure": "10:00", "arrival": "16:30"}
+  ]
+};
+
+function showFilteredTrains(typeKey){
+    const source=document.getElementById('source').value.trim().toLowerCase();
+    const dest=document.getElementById('destination').value.trim().toLowerCase();
+    if(!source||!dest){alert("Enter both Source and Destination"); return;}
+    const output=document.getElementById('trainResults'); output.innerHTML="";
+    const selectedTrains=trainsData[typeKey]||[];
+    
+    // Create table
+    let tableHTML = `
+        <table class="train-table">
+            <thead>
+                <tr>
+                    <th>Train No</th>
+                    <th>Train Name</th>
+                    <th>Route</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Fare (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    selectedTrains.forEach(t=>{
+        tableHTML += `
+            <tr>
+                <td class="train-number">${t.trainNo}</td>
+                <td class="train-name">${t.trainName}</td>
+                <td>${t.route}</td>
+                <td>${t.departure}</td>
+                <td>${t.arrival}</td>
+                <td class="train-fare">₹${t.fare}</td>
+            </tr>
+        `;
+    });
+    
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+    
+    output.innerHTML = tableHTML;
+}
+
+function logout(){
+    if(confirm('Are you sure you want to logout?')){
+        const dashboard = document.getElementById('dashboard');
+        dashboard.innerHTML = `
+            <div style="text-align:center; padding:60px 20px;">
+                <div style="background: rgba(255,255,255,0.95); border-radius:20px; padding:40px; box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+                    <h1 style="color:#27ae60; font-size:32px; margin-bottom:20px;">✅ Logged Out Successfully!</h1>
+                    <p style="color:#555; font-size:20px; margin-bottom:12px;">Thank you for using Smart Train Finder</p>
+                    <p style="color:#777; font-size:18px;">Have a great journey! 🚂</p>
+                </div>
+            </div>
+        `;
+        setTimeout(function(){
+            currentUser=null;
+            dashboard.classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }, 2500);
+    }
+}
+
+/* ----------------- SHOW BUTTONS ONLY AFTER SOURCE & DEST SELECT ----------------- */
+const sourceSelect = document.getElementById('source');
+const destSelect = document.getElementById('destination');
+const trainButtonsDiv = document.getElementById('trainTypeButtons');
+
+function checkTrainInputs() {
+    if(sourceSelect.value.trim() && destSelect.value.trim()) {
+        trainButtonsDiv.style.display = 'grid';
+    } else {
+        trainButtonsDiv.style.display = 'none';
+    }
+}
+
+sourceSelect.addEventListener('change', checkTrainInputs);
+destSelect.addEventListener('change', checkTrainInputs);
+
+</script>
+</body>
+</html>
